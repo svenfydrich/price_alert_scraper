@@ -1,0 +1,25 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "main": "dist/scraper.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/scraper.js",
+    "dev": "tsc && node dist/scraper.js",
+    "type-check": "tsc --noEmit",
+    "clean": "rmdir /s /q dist 2>nul || true"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "TypeScript web scraper for energy drink deals",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "playwright": "^1.56.1",
+    "cheerio": "^1.0.0-rc.12"
+  }
+}
