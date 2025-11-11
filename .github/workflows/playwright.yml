@@ -1,87 +1,85 @@
-name: Playwright Tests
+name: Scrape energy drink offers
+
 on:
+  schedule:
+    # Every 12 hours at minute 0 UTC
+    - cron: '0 */12 * * *'
+  workflow_dispatch:
   push:
     branches: [ main, master ]
-  name: Scrape energy drink offers
 
-  on:
-    schedule:
-      # Every 12 hours at minute 0 (UTC). Adjust if you need specific local times.
-      - cron: '0 */12 * * *'
-    workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
 
-  permissions:
-    contents: write
-    actions: read
+concurrency:
+  group: scrape-energy-drinks
+  cancel-in-progress: false
 
-  concurrency:
-    group: scrape-energy-drinks
-    cancel-in-progress: false
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
 
-  jobs:
-    scrape:
-      runs-on: ubuntu-latest
-      timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-        - name: Set up Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: '20'
-            cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
 
-        - name: Install dependencies
-          run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
 
-        - name: Install Playwright browsers
-          run: npx playwright install --with-deps
+      - name: Build TypeScript
+        run: npm run build
 
-        - name: Build TypeScript
-          run: npm run build
+      - name: Run scraper
+        run: |
+          echo "Starting scraper run at $(date -u)" 
+          node dist/scraper.js || echo "Scraper exited with non-zero status (fallback may still have produced output)."
 
-        - name: Run scraper
-          run: |
-            echo "Starting scraper run at $(date -u)" 
-            node dist/scraper.js || echo "Scraper exited with non-zero status (fallback may still have produced output)."
+      - name: Show offers.json (if exists)
+        run: |
+          if [ -f data/offers.json ]; then
+            echo "offers.json contents:"; cat data/offers.json;
+          else
+            echo "offers.json not found"; ls -R .;
+          fi
 
-        - name: Show offers.json (if exists)
-          run: |
-            if [ -f data/offers.json ]; then
-              echo "offers.json contents:"; cat data/offers.json;
+      - name: Upload offers artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offers-json
+          path: data/offers.json
+          if-no-files-found: warn
+
+      - name: Commit updated offers.json (if changed)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f data/offers.json ]; then
+            if git diff --quiet data/offers.json; then
+              echo "No changes in offers.json to commit.";
             else
-              echo "offers.json not found"; ls -R .;
+              git config user.name "github-actions"
+              git config user.email "actions@github.com"
+              git add data/offers.json
+              git commit -m "chore: update offers.json [skip ci]"
+              git push
             fi
+          else
+            echo "Skipping commit: data/offers.json missing";
+          fi
 
-        - name: Upload offers artifact
-          if: always()
-          uses: actions/upload-artifact@v4
-          with:
-            name: offers-json
-            path: data/offers.json
-            if-no-files-found: warn
-
-        - name: Commit updated offers.json (if changed)
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: |
-            if [ -f data/offers.json ]; then
-              if git diff --quiet data/offers.json; then
-                echo "No changes in offers.json to commit.";
-              else
-                git config user.name "github-actions"
-                git config user.email "actions@github.com"
-                git add data/offers.json
-                git commit -m "chore: update offers.json [skip ci]"
-                git push
-              fi
-            else
-              echo "Skipping commit: data/offers.json missing";
-            fi
-
-        - name: Summary
-          run: echo "Run completed at $(date -u)"
+      - name: Summary
+        run: echo "Run completed at $(date -u)"
