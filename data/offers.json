@@ -1,16 +1,23 @@
 [
   {
+    "title": "[REWE] Monster Energy 0,5L",
+    "price": "0,77€",
+    "retailer": "REWEVeröffentlicht von KoKoJamBo",
+    "link": "https://www.mydealz.de/deals/monster-energy-05l-2702819",
+    "scrapedAt": "2025-12-22T12:53:43.670Z"
+  },
+  {
     "title": "[Penny] Monster Energy 88ct mit Penny App 77ct",
     "price": "0,77€",
     "retailer": "PENNYVeröffentlicht von Uwebaruwe",
     "link": "https://www.mydealz.de/deals/penny-monster-energy-88ct-mit-penny-app-77ct-2702031",
-    "scrapedAt": "2025-12-22T02:07:42.445Z"
+    "scrapedAt": "2025-12-22T12:53:43.670Z"
   },
   {
     "title": "Monster Energy Drink [Edeka Südbayern]",
     "price": "0,77€",
     "retailer": "EDEKAVeröffentlicht von Phadda",
     "link": "https://www.mydealz.de/deals/monster-energy-drink-edeka-sudbayern-2701741",
-    "scrapedAt": "2025-12-22T02:07:42.447Z"
+    "scrapedAt": "2025-12-22T12:53:43.672Z"
   }
 ]
