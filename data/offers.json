@@ -1,16 +1,23 @@
 [
   {
+    "title": "Red Bull Energy Drink 24er Pack",
+    "price": "19,99€",
+    "retailer": "LidlVeröffentlicht von mydealsparer",
+    "link": "https://www.mydealz.de/deals/red-bull-energy-drink-24er-pack-2855719",
+    "scrapedAt": "2026-10-19T04:01:35.039Z"
+  },
+  {
     "title": "[Penny App] Red Bull Energy Drinks 88ct pro Dose",
     "price": "0,88€",
     "retailer": "PENNYVeröffentlicht von Allrounder",
     "link": "https://www.mydealz.de/deals/penny-app-red-bull-energy-drinks-88ct-pro-dose-2854581",
-    "scrapedAt": "2026-10-18T15:38:45.271Z"
+    "scrapedAt": "2026-10-19T04:01:35.039Z"
   },
   {
     "title": "[Lidl Plus ab 12.10] Monster Energy Drink in versch.Sorten je 0,5L für 0,75€",
     "price": "0,75€",
     "retailer": "LidlVeröffentlicht von The_Old_Dude_aka_Mimic",
     "link": "https://www.mydealz.de/deals/lidl-ab-1210-monster-energy-drink-in-verschsorten-je-05l-fur-075eur-2848030",
-    "scrapedAt": "2026-10-18T15:38:45.272Z"
+    "scrapedAt": "2026-10-19T04:01:35.040Z"
   }
 ]
